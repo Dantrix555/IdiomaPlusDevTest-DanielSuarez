@@ -12,23 +12,32 @@ public class InBattleCharacter : BaseCharacter
     private int _characterLife = 100;
     public int CharacterLife => _characterLife;
 
+    private int _realDamage = 0;
+    public int RealDamage => _realDamage;
+
     private bool _isDefending = false;
     public bool IsDefending { get => _isDefending; set => _isDefending = value; }
 
     private int _potions = 1;
+    private int _boosts = 1;
     private bool _canBoost = true;
     private bool _hasBoost = false;
 
+    private bool useRealItems = true;
+
     #region Base Character Inheritance
 
-    public override void SetupCharacter()
+    public void SetupCharacter(bool loadRealItems)
     {
         base.SetupCharacter();
 
         _characterLife = 100;
         _isDefending = false;
 
-        _potions = 1;
+        useRealItems = loadRealItems;
+        _potions = loadRealItems ? RPG_DevTest.GetItemAmount(ItemType.HEAL) : 1;
+        _boosts = loadRealItems ? RPG_DevTest.GetItemAmount(ItemType.BOOST) : 1;
+        
         _canBoost = true;
         _hasBoost = false;
     }
@@ -57,16 +66,12 @@ public class InBattleCharacter : BaseCharacter
     {
         int damage = 10 + Random.Range(0, 3);
 
-        if(_isDefending)
-        {
-            damage -= Random.Range(0, 7);
-            _isDefending = false;
-        }
-
         if(_hasBoost)
         {
             damage += 5;
+            Debug.Log("Damage is: " + damage);
             _hasBoost = false;
+            _canBoost = true;
         }
 
         return damage;
@@ -78,6 +83,14 @@ public class InBattleCharacter : BaseCharacter
     /// <param name="damage">Damage points to subtract to life points</param>
     public void SetDamage(int damage)
     {
+        if (_isDefending)
+        {
+            damage -= Random.Range(0, 7);
+            _isDefending = false;
+        }
+
+        _realDamage = damage;
+
         _characterLife -= damage;
 
         if (_characterLife <= 0)
@@ -90,10 +103,15 @@ public class InBattleCharacter : BaseCharacter
     /// <returns>Character boost posibility</returns>
     public bool CanBoost()
     {
-        if(_canBoost)
+        if (_boosts > 0 && _canBoost)
         {
-            _canBoost = !_canBoost;
+            _canBoost = false;
             _hasBoost = true;
+            _boosts--;
+
+            if(useRealItems)
+                RPG_DevTest.UpdateItemAmount(ItemType.BOOST, false);
+            
             return true;
         }
 
@@ -109,6 +127,10 @@ public class InBattleCharacter : BaseCharacter
         if(_potions > 0)
         {
             _potions--;
+
+            if (useRealItems)
+                RPG_DevTest.UpdateItemAmount(ItemType.HEAL, false);
+            
             return true;
         }
 

@@ -17,8 +17,8 @@ public class BattleController : MonoBehaviour
     private void Awake()
     {
         _battleUIPanel.SetupPanel(this);
-        _player.SetupCharacter();
-        _enemy.SetupCharacter();
+        _player.SetupCharacter(true);
+        _enemy.SetupCharacter(false);
         _battleUIPanel.OpenPanel();
 
         _playerHasChose = false;
@@ -76,8 +76,8 @@ public class BattleController : MonoBehaviour
         int damageValue = damagerCharacter.GetDamageValue();
 
         string damagedName = damagedCharacter == _player ? "True Knight" : "Fake Knight";
-        _battleUIPanel.UpdateInfoText(damagedName + " received " + damageValue + " of damage points");
         damagedCharacter.SetDamage(damageValue);
+        _battleUIPanel.UpdateInfoText(damagedName + " received " + damagedCharacter.RealDamage + " of damage points");
 
         KnightBar damagedKnight = damagedCharacter == _player ? KnightBar.PLAYER : KnightBar.ENEMY;
         _battleUIPanel.UpdateKnightLifeBar(damagedKnight, damagedCharacter.CharacterLife);

@@ -49,9 +49,21 @@ public abstract class BaseCharacter : MonoBehaviour
         characterCanMove = false;
     }
 
+    /// <summary>
+    /// Disable player movement to avoid visual weird moves
+    /// </summary>
     public void StopCharacter()
     {
-        characterCanMove = false;
+        UpdateMovementState(false);
+    }
+
+    /// <summary>
+    /// Set movement state according to desired
+    /// </summary>
+    /// <param name="canMove">Determine if character can move or not</param>
+    public void UpdateMovementState(bool canMove)
+    {
+        characterCanMove = canMove;
     }
 
     /// <summary>

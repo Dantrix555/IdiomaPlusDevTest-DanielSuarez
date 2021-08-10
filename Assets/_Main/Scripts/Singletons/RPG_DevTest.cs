@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum ItemType { HEAL, BOOST }
+
 public enum GameScene { INIT, HOME, GAMEPLAY, BATTLE }
 
 public enum StatisticParameter { SESSIONS, WONBATTLES, LOSEBATTLES }
@@ -33,7 +35,7 @@ public class RPG_DevTest : BASESingleton<RPG_DevTest>
     /// <summary>
     /// Return actual value of a custom statistic parameter
     /// </summary>
-    /// <param name="parameter"></param>
+    /// <param name="parameter">statistic value to get</param>
     public static int GetStatisticParameter(StatisticParameter parameter)
     {
         return PlayerPrefs.GetInt(parameter.ToString());
@@ -48,6 +50,31 @@ public class RPG_DevTest : BASESingleton<RPG_DevTest>
         int actualParameterValue = PlayerPrefs.GetInt(parameter.ToString());
 
         PlayerPrefs.SetInt(parameter.ToString(), actualParameterValue + 1);
+    }
+
+    /// <summary>
+    /// Return actual amount of a custom item
+    /// </summary>
+    /// <param name="item">Item type amount to get</param>
+    public static int GetItemAmount(ItemType item)
+    {
+        return PlayerPrefs.GetInt(item.ToString());
+    }
+
+    /// <summary>
+    /// Update a custom item amount
+    /// </summary>
+    /// <param name="item">item type amount to update</param>
+    /// <param name="addItem">Add item state</param>
+    public static void UpdateItemAmount(ItemType item, bool addItem)
+    {
+        int actualParameterValue = PlayerPrefs.GetInt(item.ToString());
+        actualParameterValue = addItem ? actualParameterValue + 1 : actualParameterValue - 1;
+
+        if (actualParameterValue < 0)
+            actualParameterValue = 0;
+
+        PlayerPrefs.SetInt(item.ToString(), actualParameterValue);
     }
 
     /// <summary>
