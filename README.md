@@ -161,4 +161,8 @@ public abstract class BaseCharacter : MonoBehaviour
 
 * I've implemented things like an inventory and combat system, and more stuff you can checkout in the repo.
 
-This is my first time doing an JRPG like project, meaning probably, that project need to be improved, if you think so, don't worry about forking my project or just sharing me your solution ;)
+This is my first time doing an JRPG like project, meaning probably, that project need to be improved, if you think so, don't worry about forking my project or just to share your solution ;)
+
+The project uses external resources for animation and 3D models, if you're interested, please don't hesitate to checkout this pages, this resources are great, please remember to credit to original author of this cool assets:
+
+[Mixamo Character Model and Anim movement](https://www.mixamo.com/#/?page=2&query=&type=Character/ "Mixamo Character Model and Anim movement").
